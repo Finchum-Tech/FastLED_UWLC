@@ -2,8 +2,12 @@
 /// @brief   PCA9634 wrapper layer example for adapting fast LED to the PCA9634 I2C PWM Driver
 /// @example PCA9634.ino
 
-#include <FastLED.h>
+#include <Arduino.h> //needed for conversion to cpp file
+#include <PCA9634FakePin.h>
+#include <FastLED.h> 
 #include <PCA9634.h>
+
+#define LED_PIN NULL
 
 // How many leds in your strip?
 #define NUM_LEDS 1
@@ -14,10 +18,13 @@ CRGB ledArray[NUM_LEDS];
 // Define PCA9634 device --> Constuctor takes in I2C address TODO: Confirm this with Avery again but I think 0x00
 PCA9634 ledDriver(0x00); 
 
+//function prototype
+void updateLEDs();
+
 void setup() { 
     // Uncomment/edit one of the following lines for your leds arrangement.
     // ## Clockless types ##
-    FastLED.addLeds<WS2812, 6, GRB>(ledArray, NUM_LEDS); // dummy setup
+    FastLED.addLeds<WS2812, LED_PIN, GRB>(ledArray, NUM_LEDS); // dummy setup
 
 
     ledDriver.begin();
