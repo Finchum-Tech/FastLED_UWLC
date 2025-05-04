@@ -22,10 +22,15 @@ PCA9634 ledDriver(115);
 void updateLEDs();
 
 void setup() { 
-  
+      //enable led
+      pinMode(2, OUTPUT);
+      digitalWrite(2, HIGH);
 
     // Initialize serial communication at esp8266 native baud rate of 74880
     Serial.begin(74880);
+    while (!Serial) {
+      ; // Wait for serial port to connect
+    }
     // Print a message to the Serial Monitor
     Serial.println("Serial communication initialized.");
 
@@ -35,21 +40,20 @@ void setup() {
 
     //Start 2wire comm with the following pins 
     Wire.begin(4, 5);
-    
-    //enable led
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite(LED_BUILTIN, HIGH);
 
     //enable output pin
     pinMode(OUTPUT_PIN, OUTPUT);
-    digitalWrite(OUTPUT_PIN, HIGH);
+    digitalWrite(OUTPUT_PIN, LOW);
 
     ledDriver.begin(0x01,0x14); //start pca control with register mode values
 
     Serial.println("setup loop initialized.");
+    
+    digitalWrite(2, LOW);
 }
 
 void loop() { 
+  digitalWrite(2, !(digitalRead(2)));
   // Turn the LED on, then pause
   ledArray[0] = CRGB::Red;
   updateLEDs();
